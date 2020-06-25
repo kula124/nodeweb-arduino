@@ -6,10 +6,24 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script>
+        function send() {
+            var x = parseInt(document.getElementById("x").innerText)
+            var y = parseInt(document.getElementById("y").innerText)
+            var payload = { x: x, y: y }
+            console.log(JSON.stringify(payload))
 
+            socket.send(JSON.stringify(payload))
+        }
+        var socket = io('http://localhost:3000');
+        socket.on('connect', function () {
+            console.log(socket.id)
+            setInterval(send, 1000)
+        })
+    </script>
     <script>
         var mouseDown = false;
-
 
         function handleMouseDown(e) {
             mouseDown = true;
@@ -54,7 +68,7 @@
             if (el.offsetTop > el.parentElement.clientHeight && y > el.offsetTop)
                 return
             el.style.top = y + "px";
-            document.getElementById('y').innerHTML = -(parseInt(y) - 255);
+            document.getElementById("y").innerHTML = parseInt(-(parseInt(y) - 255));
         }
 
         function handleTouchMoveX(event) {
@@ -67,7 +81,7 @@
             if (el.offsetLeft > el.parentElement.clientWidth && x > el.offsetLeft)
                 return
             el.style.left = x + "px";
-            document.getElementById('x').innerHTML = (parseInt(x) - 255);
+            document.getElementById("x").innerHTML = parseInt((parseInt(x) - 255));
         }
 
         window.onload = function () {
@@ -95,13 +109,13 @@
             <div class="path" id="pyb" onmousemove="handleMouseMoveY(event)">
                 <div id="yb" class="ball"></div>
             </div>
-            <p id="y">y</p>
+            <p id="y">0</p>
         </section>
         <section class="controller left-right">
             <div class="path" id="pxb" onmousemove="handleMouseMoveX(event)">
                 <div id="xb" class="ball"></div>
             </div>
-            <p id="x">x</p>
+            <p id="x">0</p>
         </section>
     </section>
 </body>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        var mouseDown = false;
+
+        function handleMouseDown(e) {
+            console.log(e)
+            mouseDown = true;
+        }
+        function handleMouseUp(e) {
+            console.log(e)
+            mouseDown = false;
+            document.getElementById("yb").style = {}
+            document.getElementById("xb").style = {}
+            document.getElementById("y").innerHTML = '0';
+            document.getElementById("x").innerHTML = '0';
+        }
+        function handleMouseMoveY(e) {
+            if (!mouseDown)
+                return
+            document.getElementById("y").innerHTML = e.offsetY;
+            document.getElementById("yb").style.top = e.offsetY + "px";
+        }
+        function handleMouseMoveX(e) {
+            if (!mouseDown)
+                return
+            document.getElementById("x").innerHTML = e.offsetX;
+            document.getElementById("xb").style.left = e.offsetX + "px";
+        }
+    </script>
+</head>
+
+<body>
+    <section>
+        <header class="main-header">
+            <h1>Kula's controller</h1>
+        </header>
+    </section>
+    <section class="controllers" onmousedown="handleMouseDown(event)" onmouseup="handleMouseUp(event)">
+        <section class="controller up-down">
+            <div class="path" onmousemove="handleMouseMoveY(event)">
+                <div id="yb" class="ball" onmousemove="event.stopPropagation()"></div>
+            </div>
+        </section>
+        <section class="controller left-right">
+            <div class="path" onmousemove="handleMouseMoveX(event)">
+                <div id="xb" class="ball" onmousemove="event.stopPropagation()"></div>
+            </div>
+        </section>
+    </section>
+    <section class="position">
+        <p id="x">x</p>
+        <p id="y">y</p>
+    </section>
+</body>
+
+</html>

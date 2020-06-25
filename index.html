@@ -11,21 +11,21 @@
         var mouseDown = false;
 
         function handleMouseDown(e) {
-            console.log(e)
             mouseDown = true;
         }
+
         function handleMouseUp(e) {
-            console.log(e)
             mouseDown = false;
             document.getElementById("yb").style = {}
             document.getElementById("xb").style = {}
             document.getElementById("y").innerHTML = '0';
             document.getElementById("x").innerHTML = '0';
         }
+
         function handleMouseMoveY(e) {
             if (!mouseDown)
                 return
-            document.getElementById("y").innerHTML = e.offsetY;
+            document.getElementById("y").innerHTML = -(e.offsetY - 255);
             document.getElementById("yb").style.top = e.offsetY + "px";
         }
         function handleMouseMoveX(e) {
@@ -46,12 +46,14 @@
     <section class="controllers" onmousedown="handleMouseDown(event)" onmouseup="handleMouseUp(event)">
         <section class="controller up-down">
             <div class="path" onmousemove="handleMouseMoveY(event)">
-                <div id="yb" class="ball" onmousemove="event.stopPropagation()"></div>
+                <div id="yb" class="ball">
+                </div>
             </div>
         </section>
         <section class="controller left-right">
             <div class="path" onmousemove="handleMouseMoveX(event)">
-                <div id="xb" class="ball" onmousemove="event.stopPropagation()"></div>
+                <div id="xb" class="ball">
+                </div>
             </div>
         </section>
     </section>

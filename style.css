@@ -3,7 +3,7 @@
     width: 100%;
     margin: 0 auto;
     height: 60px;
-    background-color: aqua;
+    background-color: #282727;
 }
 
 body {
@@ -20,13 +20,15 @@ body {
 
 .controllers {
     display: flex;
+    border: 1px solid black;
+    background-color: #323131;
     justify-content: space-between;
     align-items: center;
 }
 
 .controller {
-    width: 45vw;
     border: 1px solid black;
+    width: 45vw;
     height: 70vh;
 }
 
@@ -38,12 +40,15 @@ body {
     display: relative;
 }
 
+.path {
+    background-color: #3f3d3d;
+}
+
 .up-down .path {
     width: 50px;
     height: 510px;
     margin: auto;
     border-radius: 10px;
-    border: black 1px solid;
     position: relative;
 }
 
@@ -55,7 +60,6 @@ body {
     transform: translateY(-50%);
     top: 50%;
     border-radius: 25%;
-    border: solid 1px black;
 }
 
 .left-right .path {
@@ -66,7 +70,6 @@ body {
     height: 50px;
     margin: auto;
     border-radius: 10px;
-    border: black 1px solid;
     position: relative;
 }
 
@@ -78,15 +81,75 @@ body {
     transform: translateX(-50%);
     left: 50%;
     border-radius: 25%;
-    border: solid 1px black;
+}
+
+.path .ball {
+    background-color: teal;
+    pointer-events: none;
+}
+
+.path .ball:hover {
+    color: cyan;
+    -webkit-box-shadow: -7px 3px 69px -1px rgba(0, 255, 255, 1);
+    -moz-box-shadow: -7px 3px 69px -1px rgba(0, 255, 255, 1);
+    box-shadow: -7px 3px 69px -1px rgba(0, 255, 255, 1);
 }
 
 .position {
     margin: 10px auto;
+    border: 1px solid black;
     height: 100px;
     display: flex;
     flex-flow: row-reverse;
     justify-content: space-between;
     width: 50vw;
-    border: 1px solid black;
+}
+
+@media screen and (orientation: landscape) and (min-device-width: 319px) and (max-device-width: 1000px) {
+    .controller {
+        width: 60vw;
+        height: 95vh;
+    }
+
+    .controller:first-of-type {
+        width: 40vw;
+        height: 95vh;
+        margin: 0;
+    }
+
+    .up-down .path {
+        width: 80px;
+        height: 450px;
+        margin: 20px auto;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .left-right .path {
+        height: 80px;
+        width: 450px;
+        margin: 20px auto;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .left-right .path .ball {
+        position: absolute;
+        height: 60px;
+        width: 60px;
+        top: 10px;
+        transform: translateX(-50%);
+        left: 50%;
+        border-radius: 25%;
+    }
+
+    .up-down .path .ball {
+        position: absolute;
+        height: 60px;
+        width: 60px;
+        left: 10px;
+        transform: translateY(-50%);
+        top: 50%;
+        border-radius: 25%;
+    }
 }

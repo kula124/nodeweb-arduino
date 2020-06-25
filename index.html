@@ -10,6 +10,7 @@
     <script>
         var mouseDown = false;
 
+
         function handleMouseDown(e) {
             mouseDown = true;
         }
@@ -34,6 +35,51 @@
             document.getElementById("x").innerHTML = e.offsetX;
             document.getElementById("xb").style.left = e.offsetX + "px";
         }
+
+        function handleTouchStart(event) {
+            document.getElementsByTagName("body")[0].classList.add("lock-screen");
+        }
+
+        function handleTouchEnd(event) {
+            document.getElementsByTagName("body")[0].classList.remove("lock-screen");
+        }
+
+        function handleTouchMoveY(event) {
+            var el = document.getElementById("yb");
+            var y = event.targetTouches[0].clientY - 40
+
+            console.log(event)
+            if (el.offsetTop < 0 && y < el.offsetTop)
+                return
+            if (el.offsetTop > el.parentElement.clientHeight && y > el.offsetTop)
+                return
+            el.style.top = y + "px";
+            document.getElementById('y').innerHTML = -(parseInt(y) - 255);
+        }
+
+        function handleTouchMoveX(event) {
+            var el = document.getElementById("xb");
+            var x = event.targetTouches[0].clientX - 455
+
+            console.log(event)
+            if (el.offsetLeft < 0 && x < el.offsetTop)
+                return
+            if (el.offsetLeft > el.parentElement.clientWidth && x > el.offsetLeft)
+                return
+            el.style.left = x + "px";
+            document.getElementById('x').innerHTML = (parseInt(x) - 255);
+        }
+
+        window.onload = function () {
+            console.log("hi")
+            document.getElementById("pyb").addEventListener("touchstart", handleTouchStart, false)
+            document.getElementById("pyb").addEventListener("touchmove", handleTouchMoveY, false)
+            document.getElementById("pyb").addEventListener("touchend", handleTouchEnd, false)
+
+            document.getElementById("pxb").addEventListener("touchstart", handleTouchStart, false)
+            document.getElementById("pxb").addEventListener("touchmove", handleTouchMoveX, false)
+            document.getElementById("pxb").addEventListener("touchend", handleTouchEnd, false)
+        }
     </script>
 </head>
 
@@ -43,23 +89,20 @@
             <h1>Kula's controller</h1>
         </header>
     </section>
-    <section class="controllers" onmousedown="handleMouseDown(event)" onmouseup="handleMouseUp(event)">
+    <section class="controllers" onmousedown="handleMouseDown(event)" onmouseup="handleMouseUp(event)"
+        touchstart="handleTouchStart()" touchmove="handleTouchMove()">
         <section class="controller up-down">
-            <div class="path" onmousemove="handleMouseMoveY(event)">
-                <div id="yb" class="ball">
-                </div>
+            <div class="path" id="pyb" onmousemove="handleMouseMoveY(event)">
+                <div id="yb" class="ball"></div>
             </div>
+            <p id="y">y</p>
         </section>
         <section class="controller left-right">
-            <div class="path" onmousemove="handleMouseMoveX(event)">
-                <div id="xb" class="ball">
-                </div>
+            <div class="path" id="pxb" onmousemove="handleMouseMoveX(event)">
+                <div id="xb" class="ball"></div>
             </div>
+            <p id="x">x</p>
         </section>
-    </section>
-    <section class="position">
-        <p id="x">x</p>
-        <p id="y">y</p>
     </section>
 </body>
 

@@ -2,8 +2,13 @@
     display: flex;
     width: 100%;
     margin: 0 auto;
-    height: 60px;
+    height: 5vh;
     background-color: #282727;
+}
+
+.lock-screen {
+    overflow: hidden;
+    position: fixed;
 }
 
 body {
@@ -27,9 +32,24 @@ body {
 }
 
 .controller {
+    justify-content: center;
+    align-items: center;
     border: 1px solid black;
     width: 45vw;
-    height: 70vh;
+    height: 95vh;
+}
+
+.controller:first-of-type p {
+    font-size: 20px;
+    color: cyan;
+    padding-right: 100px;
+}
+
+.controller p {
+    font-size: 20px;
+    color: cyan;
+    margin: 0 auto;
+    width: fit-content;
 }
 
 .up-down {
@@ -119,7 +139,7 @@ body {
 
     .up-down .path {
         width: 80px;
-        height: 450px;
+        height: 90vh;
         margin: 20px auto;
         border-radius: 10px;
         position: relative;
@@ -127,7 +147,7 @@ body {
 
     .left-right .path {
         height: 80px;
-        width: 450px;
+        width: 80%;
         margin: 20px auto;
         border-radius: 10px;
         position: relative;

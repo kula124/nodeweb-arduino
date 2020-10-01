@@ -1,0 +1,6 @@
+module.exports = {
+  FORWARD: 'MOTOR.FORWARD',
+  STOP: 'MOTOR.STOP',
+  REVERSE: 'MOTOR.REVERSE',
+  SWITCH: 'MOTOR.SWITCH'
+}

@@ -12,6 +12,8 @@ var options = {
 var client = net.connect(options, function() { 
 
   console.log('Connected to the server!');
+  require('./src/services/httpServer')
+  console.log('File server started')
   
   var socketClient = this;
   var io = new firmata.Board(socketClient);

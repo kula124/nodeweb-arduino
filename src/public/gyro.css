@@ -1,0 +1,30 @@
+.controllersContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: fit-content;
+  width: 100%;
+}
+
+.controller {
+  background-color: darkcyan;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+body {
+  background: url(https://www.toptal.com/designers/subtlepatterns/patterns/micro_carbon.png);
+  position: relative;
+  height: 100vh;
+}
+
+body > header {
+  color: white;
+  text-align: center;
+  margin-top: 10px;
+}

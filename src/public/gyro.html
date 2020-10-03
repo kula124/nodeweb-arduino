@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>title</title>
+  <meta name="author" content="name">
+  <meta name="description" content="description here">
+  <meta name="keywords" content="keywords,here">
+  <link rel="stylesheet" href="gyro.css" type="text/css">
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <script>
+    var leftOn=false;
+    var rightOn=false;
+    var connected=false;
+    var socket=io('http://localhost:3000');
+    socket.close()
+    var sender=null;
+
+    function connect() {
+      if(connected) {
+        socket.close()
+        connected=false
+        clearInterval(sender)
+      } else {
+        socket.open('http://localhost:3000')
+        connected=true
+        shouldRunGyro()
+      }
+
+    }
+
+    function shouldRunGyro() {
+      console.log('hi',leftOn,rightOn,connected)
+
+      if(leftOn&&rightOn&&connected) {
+        console.log('sending')
+        sender=setInterval(function() {
+          socket.send('gyro m8')
+        },1000)
+      } else {
+        clearInterval(sender)
+      }
+    }
+
+    function toggleLeft() {
+      console.log('hi',leftOn,rightOn)
+      leftOn=!leftOn;
+      shouldRunGyro()
+    }
+
+    function toggleRight() {
+      console.log('hi',leftOn,rightOn)
+      rightOn=!rightOn;
+      shouldRunGyro()
+    }
+  </script>
+</head>
+
+<body>
+  <header>Controller</header>
+  <button onclick="connect()">Connect</button>
+  <section class="controllersContainer">
+    <div class="controller" ontouchstart="toggleLeft()">
+    </div>
+    <div class="controller" ontouchstart="toggleRight()">
+    </div>
+  </section>
+  <div class="cover">
+
+  </div>
+
+
+  <script type="text/javascript">
+    function autorun() {
+
+    }
+    if(document.addEventListener) document.addEventListener("DOMContentLoaded",autorun,false);
+    else if(document.attachEvent) document.attachEvent("onreadystatechange",autorun);
+    else window.onload=autorun;
+  </script>
+</body>
+
+</html>

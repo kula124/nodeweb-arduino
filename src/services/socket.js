@@ -19,7 +19,7 @@ const Run = () => {
     runner = spawn('termux-sensor', ['-s', 'K6DS3TR Accelerometer', '-d', 100])
     let firstRun = true
     runner.stdout.on('data', data => {
-        console.log(data.toString())
+        console.log(JSON.parse(data.toString()))
         if (firstRun) {
             firstRun = false;
         }

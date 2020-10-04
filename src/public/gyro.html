@@ -22,8 +22,10 @@
     let socket=io('http://localhost:3000');
     socket.on('connect',() => {
       connected=true;
+      console.log('connected!')
     })
     socket.on('disconnect',() => {
+      console.log('disconnected!')
       connected=false;
       state={
         alpha: 0,
@@ -48,34 +50,27 @@
       else {
         socket.open('http://localhost:3000')
       }
-
     }
 
-    function handleOrientation(e) {
-      console.log('hi',leftOn,rightOn,connected,e)
-
+    function runGyro() {
+      console.log('hi',leftOn,rightOn,connected)
       if(leftOn&&rightOn&&connected) {
-        state={
-          ...e
-        }
-
-        while(leftOn&&rightOn&&connected) {
-          socket.send(JSON.stringify({ ...calculateDelta(state,e),type: 'GYRO.DATA' }))
-        }
-        if(connected) {
-          socket.send(JSON.stringify({ type: 'GYRO.STOP' }))
-        }
+        console.log('sending')
+        socket.send(JSON.stringify({ type: 'GYRO.START' }))
+      }
+      else if(connected) {
+        socket.send(JSON.stringify({ type: 'GYRO.END' }))
       }
     }
 
     function toggleLeft() {
-      console.log('hi',leftOn,rightOn);
       leftOn=!leftOn;
+      runGyro()
     }
 
     function toggleRight() {
-      console.log('hi',leftOn,rightOn);
       rightOn=!rightOn;
+      runGyro()
     }
   </script>
 </head>
@@ -92,16 +87,6 @@
   <div class="cover">
 
   </div>
-
-
-  <script type="text/javascript">
-    function autorun() {
-      window.addEventListener("deviceorientation",handleOrientation,true);
-    }
-    if(document.addEventListener) document.addEventListener("DOMContentLoaded",autorun,false);
-    else if(document.attachEvent) document.attachEvent("onreadystatechange",autorun);
-    else window.onload=autorun;
-  </script>
 </body>
 
 </html>

@@ -9,20 +9,22 @@ const ServoActions = require('../constants/servo')
 
 let runner = null
 
-const gyroState = {
-    alpha: 0,
-    beta: 0,
-    gamma: 0
-}
+let gyroState = {}
 
 const Run = () => {
     runner = spawn('termux-sensor', ['-s', 'K6DS3TR Accelerometer', '-d', 100])
     let firstRun = true
     runner.stdout.on('data', data => {
         console.log(JSON.parse(data.toString()))
+        const [alpha, beta, gamma] = JSON.parse(data.toString())['K6DS3TR Accelerometer'].values
         if (firstRun) {
+            gyroState = {
+                alpha, beta, gamma
+            }
             firstRun = false;
+            return
         }
+        // add mapping
     })
 }
 
@@ -37,9 +39,11 @@ io.on('connect', socket => {
                 break;
             case messageTypes.GYRO_END:
                 console.log('END:')
-                runner ? runner.kill() : (() => console.log('ayy lmaoo'))()
-                //controller.act(MotorActions.STOP);
-                //controller.act(ServoActions.STOP);
+                if (runner) {
+                    runner.kill()
+                    firstRun = true
+                    gyroState = {}
+                }
                 break;
         }
     })

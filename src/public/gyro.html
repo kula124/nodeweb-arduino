@@ -11,56 +11,78 @@
   <link rel="stylesheet" href="gyro.css" type="text/css">
   <script src="http://localhost:3000/socket.io/socket.io.js"></script>
   <script>
-    var leftOn=false;
-    var rightOn=false;
-    var connected=false;
-    var socket=io('http://localhost:3000');
+    let leftOn=false;
+    let rightOn=false;
+    let connected=false;
+    let state={
+      alpha: 0,
+      beta: 0,
+      gamma: 0
+    }
+    let socket=io('http://localhost:3000');
+    socket.on('connect',() => {
+      connected=true;
+    })
+    socket.on('disconnect',() => {
+      connected=false;
+      state={
+        alpha: 0,
+        beta: 0,
+        gamma: 0
+      }
+    })
     socket.close()
-    var sender=null;
 
-    function connect() {
+    function calculateDelta(state,event) {
+      return {
+        dAlpha: state.alpha-event.alpha,
+        dBeta: state.beta-event.beta,
+        dGamma: state.gamma-event.gamma,
+      }
+    }
+
+    function toggleConnect() {
       if(connected) {
         socket.close()
-        connected=false
-        clearInterval(sender)
-      } else {
+      }
+      else {
         socket.open('http://localhost:3000')
-        connected=true
-        shouldRunGyro()
       }
 
     }
 
-    function shouldRunGyro() {
-      console.log('hi',leftOn,rightOn,connected)
+    function handleOrientation(e) {
+      console.log('hi',leftOn,rightOn,connected,e)
 
       if(leftOn&&rightOn&&connected) {
-        console.log('sending')
-        sender=setInterval(function() {
-          socket.send('gyro m8')
-        },1000)
-      } else {
-        clearInterval(sender)
+        state={
+          ...e
+        }
+
+        while(leftOn&&rightOn&&connected) {
+          socket.send(JSON.stringify({ ...calculateDelta(state,e),type: 'GYRO.DATA' }))
+        }
+        if(connected) {
+          socket.send(JSON.stringify({ type: 'GYRO.STOP' }))
+        }
       }
     }
 
     function toggleLeft() {
-      console.log('hi',leftOn,rightOn)
+      console.log('hi',leftOn,rightOn);
       leftOn=!leftOn;
-      shouldRunGyro()
     }
 
     function toggleRight() {
-      console.log('hi',leftOn,rightOn)
+      console.log('hi',leftOn,rightOn);
       rightOn=!rightOn;
-      shouldRunGyro()
     }
   </script>
 </head>
 
 <body>
   <header>Controller</header>
-  <button onclick="connect()">Connect</button>
+  <button onclick="toggleConnect()">Connect</button>
   <section class="controllersContainer">
     <div class="controller" ontouchstart="toggleLeft()">
     </div>
@@ -74,7 +96,7 @@
 
   <script type="text/javascript">
     function autorun() {
-
+      window.addEventListener("deviceorientation",handleOrientation,true);
     }
     if(document.addEventListener) document.addEventListener("DOMContentLoaded",autorun,false);
     else if(document.attachEvent) document.attachEvent("onreadystatechange",autorun);

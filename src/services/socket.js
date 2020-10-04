@@ -19,7 +19,7 @@ const Run = () => {
     runner = spawn('termux-sensor', ['-s KDS3TR Accelerometer', '-d 100'])
     let firstRun = true
     runner.stdout.on('data', data => {
-        console.log(data)
+        console.log(data.toString())
         if (firstRun) {
             gyroState.alpha = data.AccMeter.alpha
             gyroState.beta = data.AccMeter.beta

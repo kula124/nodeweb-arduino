@@ -33,7 +33,7 @@ const Run = () => {
             runner.kill()
             return
         }
-        const [alpha, beta, gamma] 
+        const [alpha, beta, gamma] = parsedData
         if (firstRun) {
             gyroState = {
                 alpha: Math.abs(alpha),

@@ -15,6 +15,7 @@ let gyroState = {}
 const MOTOR_DELTA = 1
 const SERVO_DELTA = 0.5
 const IN_MAX = 9.8
+const IN_MIN = 0
 const BALANCE = IN_MAX / 2
 
 const mapper = (value, inMin, inMax, outMin, outMax) => parseInt(
@@ -37,7 +38,7 @@ const Run = () => {
         }
         // determine mode:
         const modeOne = alpha > 0 && Math.abs(alpha) < BALANCE   
-        const motorValue = mapper(alpha, (modeOne ? inMin : inMax) + gyroState.alpha - BALANCE,  (!modeOne ? inMin : inMax) + gyroState.alpha - balance, -255, 255)
+        const motorValue = mapper(alpha, (modeOne ? IN_MIN : IN_MAX) + gyroState.alpha - BALANCE,  (!modeOne ? IN_MIN : IN_MAX) + gyroState.alpha - balance, -255, 255)
         const servoValue = mapper(beta, -3.5, 3.5, -40, 40)
         controller.act(motorValue > 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
         controller.act(servoValue ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))

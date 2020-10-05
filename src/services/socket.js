@@ -26,7 +26,7 @@ const Run = () => {
     let firstRun = true
     let prevValue = {motor: 0, servo: 0}
     runner.stderr.on('data', error => console.log("Error detected!", error))
-    runner.on('close', console.log('Termux-sensor terminated!'))
+    runner.on('close', () => console.log('Termux-sensor terminated!'))
     runner.on('error', () => console.log('Main call error'))
     runner.stdout.on('data', data => {
         let parsedData

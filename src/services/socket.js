@@ -7,7 +7,6 @@ const messageTypes = require('../constants/message')
 const controller = require('../controller')
 const MotorActions = require('../constants/motor')
 const ServoActions = require('../constants/servo');
-const { Servo } = require('johnny-five');
 
 let runner = null
 
@@ -64,10 +63,10 @@ const Run = () => {
         if (motorValue > -10 && motorValue < 10)
             return controller.act(MotorActions.STOP)
         if (Math.abs(prevValue.motor - motorValue) > MOTOR_DELTA) {
-            // controller.act(motorValue < 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
+            controller.act(motorValue < 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
             prevValue.motor = motorValue
         }
-        if (Math.abs(prevValue.servoValue - servoValue) > SERVO_DELTA) {
+        if (Math.abs(prevValue.servo - servoValue) > SERVO_DELTA) {
             controller.act(servoValue > 0 ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))
             prevValue.servo = servoValue
         }

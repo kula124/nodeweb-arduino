@@ -12,20 +12,20 @@ var options = {
 var client = net.connect(options, function() { 
 
   console.log('Connected to the server!');
-  require('./src/services/httpServer')
-  console.log('File server started')
   
   var socketClient = this;
   var io = new firmata.Board(socketClient);
 
   io.once('ready', function(){
-    console.log('IO ready!');
     io.isReady = true;
 
     var board = new five.Board({io: io, repl: true});
 
     board.on('ready', function(){
       console.log('Board connected!');
+      console.log('IO ready!');
+      require('./src/services/httpServer')
+      console.log('File server started')
       //Full Johnny-Five code here:
 
       var led = new five.Led(13);

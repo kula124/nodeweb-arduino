@@ -41,8 +41,9 @@ const Run = () => {
         console.log('Run -> alpha', alpha)
         console.log('Run -> modeOne', modeOne)
         const motorValue = mapper(alpha, (modeOne ? IN_MIN : IN_MAX) + gyroState.alpha - BALANCE,  (!modeOne ? IN_MIN : IN_MAX) + gyroState.alpha - BALANCE, -255, 255)
-        console.log('Run -> IN_MAX', !modeOne ? IN_MIN : IN_MAX)
         console.log('Run -> IN_MIN', modeOne ? IN_MIN : IN_MAX)
+        console.log('Run -> IN_MAX', !modeOne ? IN_MIN : IN_MAX)
+        console.log('Run -> motorValue', motorValue)
 
 
         const servoValue = mapper(beta, -3.5, 3.5, -40, 40)

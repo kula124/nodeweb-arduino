@@ -50,7 +50,7 @@ const Run = () => {
         console.log('Run -> modeOne', modeOne)
         console.log('Run -> reference', gyroState.alpha)
 
-        const motorValue = mapper(alpha, IN_MIN + (- BALANCE + gyroState.alpha), IN_MAX + (-BALANCE + gyroState.alpha), -255, 255)
+        const motorValue = mapper(alpha, IN_MIN + (- BALANCE + gyroState.alpha), IN_MAX + (-BALANCE + gyroState.alpha), -100, 100)
         console.log('Run -> IN_MIN', IN_MIN - (BALANCE - gyroState.alpha))
         console.log('Run -> IN_MAX',  IN_MAX - (BALANCE - gyroState.alpha))
         console.log('Run -> motorValue', motorValue)

@@ -12,22 +12,27 @@ let runner = null
 
 let gyroState = {}
 const MOTOR_DELTA = 5
-const SERVO_DELTA = 5
+const SERVO_DELTA = 2
 const IN_MAX = 9.8
 const IN_MIN = 0
 const BALANCE = IN_MAX / 2
+let firstRun = true
 
 const mapper = (value, inMin, inMax, outMin, outMax) => parseInt(
     (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin);
 
 const Run = () => {
+    if (runner) {
+        return
+    }
     runner = spawn('termux-sensor', ['-s', 'K6DS3TR Accelerometer', '-d', 100])
-    let firstRun = true
     let prevValue = { motor: 0, servo: 0 }
     runner.stderr.on('data', error => console.log("Error detected!", error))
     runner.on('close', () => console.log('Termux-sensor terminated!'))
     runner.on('error', () => console.log('Main call error'))
     runner.stdout.on('data', data => {
+        if (!shouldRun)
+            return
         let parsedData
         try {
             parsedData = JSON.parse(data.toString())['K6DS3TR Accelerometer'].values
@@ -80,15 +85,15 @@ io.on('connect', socket => {
         switch (type) {
             case messageTypes.GYRO_START:
                 console.log('START:')
+                shouldRun = true;
+                firstRun = true;
                 Run()
                 break;
             case messageTypes.GYRO_END:
                 console.log('END:')
-                if (runner) {
-                    kill(runner.pid)
-                    firstRun = true
-                    gyroState = {}
-                }
+                shouldRun = false;
+                controller.act(MotorActions.STOP)
+                controller.act(ServoActions.STOP)
                 break;
         }
     })

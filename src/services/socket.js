@@ -12,8 +12,8 @@ const { Servo }=require('johnny-five');
 let runner = null
 
 let gyroState = {}
-const MOTOR_DELTA = 1
-const SERVO_DELTA = 0.5
+const MOTOR_DELTA = 30
+const SERVO_DELTA = 10
 const IN_MAX = 9.8
 const IN_MIN = 0
 const BALANCE = IN_MAX / 2
@@ -24,10 +24,16 @@ const mapper = (value, inMin, inMax, outMin, outMax) => parseInt(
 const Run = () => {
     runner = spawn('termux-sensor', ['-s', 'K6DS3TR Accelerometer', '-d', 100])
     let firstRun = true
-    let prevValue = {alpha: 0, beta: 0}
+    let prevValue = {motor: 0, servo: 0}
     runner.stdout.on('data', data => {
-        console.log(JSON.parse(data.toString()))
-        const [alpha, beta, gamma] = JSON.parse(data.toString())['K6DS3TR Accelerometer'].values
+        let parsedData
+        try {
+           parsedData = JSON.parse(data.toString())['K6DS3TR Accelerometer'].values
+        } catch (error) {
+            runner.kill()
+            return
+        }
+        const [alpha, beta, gamma] 
         if (firstRun) {
             gyroState = {
                 alpha: Math.abs(alpha),
@@ -51,12 +57,14 @@ const Run = () => {
 
 
         const servoValue = mapper(beta, -3.5, 3.5, -40, 40)
-        // if (Math.abs(prevValue.alpha - alpha) > MOTOR_DELTA)
+        if (Math.abs(prevValue.motor - motorValue) > MOTOR_DELTA){
             controller.act(motorValue < 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
-        // if (Math.abs(prevValue.beta - beta) > SERVO_DELTA)
-            controller.act(servoValue ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))
-        prevValue.alpha = alpha
-        prevValue.beta = beta
+            prevValue.motor = motorValue
+        }
+        if (Math.abs(prevValue.servoValue - servoValue) > SERVO_DELTA) {
+            controller.act(servoValue > 0 ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))
+            prevValue.servo = servoValue 
+        }
     })
 }
 

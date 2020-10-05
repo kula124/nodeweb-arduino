@@ -1,13 +1,13 @@
 const Server = require('socket.io');
 const io = new Server();
 const { spawn } = require('child_process')
-const kill  = require('tree-kill');
+const kill = require('tree-kill');
 
 const messageTypes = require('../constants/message')
 const controller = require('../controller')
 const MotorActions = require('../constants/motor')
 const ServoActions = require('../constants/servo');
-const { Servo }=require('johnny-five');
+const { Servo } = require('johnny-five');
 
 let runner = null
 
@@ -24,14 +24,14 @@ const mapper = (value, inMin, inMax, outMin, outMax) => parseInt(
 const Run = () => {
     runner = spawn('termux-sensor', ['-s', 'K6DS3TR Accelerometer', '-d', 100])
     let firstRun = true
-    let prevValue = {motor: 0, servo: 0}
+    let prevValue = { motor: 0, servo: 0 }
     runner.stderr.on('data', error => console.log("Error detected!", error))
     runner.on('close', () => console.log('Termux-sensor terminated!'))
     runner.on('error', () => console.log('Main call error'))
     runner.stdout.on('data', data => {
         let parsedData
         try {
-           parsedData = JSON.parse(data.toString())['K6DS3TR Accelerometer'].values
+            parsedData = JSON.parse(data.toString())['K6DS3TR Accelerometer'].values
         } catch (error) {
             runner.kill()
             return
@@ -56,20 +56,20 @@ const Run = () => {
         const motorValue = mapper(alpha, IN_MIN + (- BALANCE + gyroState.alpha), IN_MAX + (-BALANCE + gyroState.alpha), -100, 100)
         const servoValue = mapper(beta, -2, 2, -40, 40)
         console.log('Run -> IN_MIN', IN_MIN - (BALANCE - gyroState.alpha))
-        console.log('Run -> IN_MAX',  IN_MAX - (BALANCE - gyroState.alpha))
+        console.log('Run -> IN_MAX', IN_MAX - (BALANCE - gyroState.alpha))
         console.log('Run -> motorValue', motorValue)
         console.log('Run -> servoValue', servoValue)
 
 
         if (motorValue > -10 && motorValue < 10)
             return controller.act(MotorActions.STOP)
-        if (Math.abs(prevValue.motor - motorValue) > MOTOR_DELTA){
-            controller.act(motorValue < 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
+        if (Math.abs(prevValue.motor - motorValue) > MOTOR_DELTA) {
+            // controller.act(motorValue < 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
             prevValue.motor = motorValue
         }
         if (Math.abs(prevValue.servoValue - servoValue) > SERVO_DELTA) {
             controller.act(servoValue > 0 ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))
-            prevValue.servo = servoValue 
+            prevValue.servo = servoValue
         }
     })
 }
@@ -77,7 +77,7 @@ const Run = () => {
 io.on('connect', socket => {
     socket.on('message', data => {
         data = JSON.parse(data)
-        const {type, ...deltas} = data
+        const { type, ...deltas } = data
         switch (type) {
             case messageTypes.GYRO_START:
                 console.log('START:')

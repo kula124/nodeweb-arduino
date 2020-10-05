@@ -12,7 +12,7 @@ const { Servo }=require('johnny-five');
 let runner = null
 
 let gyroState = {}
-const MOTOR_DELTA = 30
+const MOTOR_DELTA = 5
 const SERVO_DELTA = 10
 const IN_MAX = 9.8
 const IN_MIN = 0
@@ -54,9 +54,12 @@ const Run = () => {
         console.log('Run -> IN_MIN', IN_MIN - (BALANCE - gyroState.alpha))
         console.log('Run -> IN_MAX',  IN_MAX - (BALANCE - gyroState.alpha))
         console.log('Run -> motorValue', motorValue)
+        console.log('Run -> servoValue', servoValue)
 
 
         const servoValue = mapper(beta, -3.5, 3.5, -40, 40)
+        if (motorValue > -10 && motorValue < 10)
+            return controller.act(MotorActions.STOP)
         if (Math.abs(prevValue.motor - motorValue) > MOTOR_DELTA){
             controller.act(motorValue < 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
             prevValue.motor = motorValue

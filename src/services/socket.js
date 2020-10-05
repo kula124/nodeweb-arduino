@@ -19,7 +19,7 @@ const IN_MIN = 0
 const BALANCE = IN_MAX / 2
 
 const mapper = (value, inMin, inMax, outMin, outMax) => parseInt(
-    (value - inMin) * (outMax - outMin) / (outMax - outMin) + outMin);
+    (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin);
 
 const Run = () => {
     runner = spawn('termux-sensor', ['-s', 'K6DS3TR Accelerometer', '-d', 2000])

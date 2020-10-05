@@ -24,6 +24,7 @@ const mapper = (value, inMin, inMax, outMin, outMax) => parseInt(
 const Run = () => {
     runner = spawn('termux-sensor', ['-s', 'K6DS3TR Accelerometer', '-d', 2000])
     let firstRun = true
+    let prevValue = {alpha: 0, beta: 0}
     runner.stdout.on('data', data => {
         console.log(JSON.parse(data.toString()))
         const [alpha, beta, gamma] = JSON.parse(data.toString())['K6DS3TR Accelerometer'].values
@@ -38,9 +39,11 @@ const Run = () => {
         }
         // determine mode:
         const modeOne = alpha > 0
+        prevValue.alpha = alpha;
+        prevValue.beta = beta;
         console.log('Run -> modeOne', modeOne)
         console.log('Run -> reference', gyroState.alpha)
-        
+
         const motorValue = mapper(alpha, IN_MIN + (- BALANCE + gyroState.alpha), IN_MAX + (-BALANCE + gyroState.alpha), -255, 255)
         console.log('Run -> IN_MIN', IN_MIN - (BALANCE - gyroState.alpha))
         console.log('Run -> IN_MAX',  IN_MAX - (BALANCE - gyroState.alpha))
@@ -48,8 +51,10 @@ const Run = () => {
 
 
         const servoValue = mapper(beta, -3.5, 3.5, -40, 40)
-        // controller.act(motorValue > 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
-        // controller.act(servoValue ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))
+        if (Math.abs(prevValue.alpha - alpha) > MOTOR_DELTA)
+            controller.act(motorValue < 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
+        if (Math.abs(prevValue.beta - beta) > SERVO_DELTA)
+            controller.act(servoValue ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))
     })
 }
 

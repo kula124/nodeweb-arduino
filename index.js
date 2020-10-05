@@ -24,7 +24,7 @@ var client = net.connect(options, function() {
     board.on('ready', function(){
       console.log('Board connected!');
       console.log('IO ready!');
-      require('./src/services/httpServer')
+      setTimeout(() => require('./src/services/httpServer'), 2000)
       console.log('File server started')
       //Full Johnny-Five code here:
 

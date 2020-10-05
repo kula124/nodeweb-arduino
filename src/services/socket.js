@@ -4,7 +4,7 @@ const { spawn } = require('child_process')
 const kill  = require('tree-kill');
 
 const messageTypes = require('../constants/message')
-const controller = require('../controller')
+// const controller = require('../controller')
 const MotorActions = require('../constants/motor')
 const ServoActions = require('../constants/servo');
 const { Servo }=require('johnny-five');
@@ -22,7 +22,7 @@ const mapper = (value, inMin, inMax, outMin, outMax) => parseInt(
     (value - inMin) * (outMax - outMin) / (outMax - outMin) + outMin);
 
 const Run = () => {
-    runner = spawn('termux-sensor', ['-s', 'K6DS3TR Accelerometer', '-d', 100])
+    runner = spawn('termux-sensor', ['-s', 'K6DS3TR Accelerometer', '-d', 2000])
     let firstRun = true
     runner.stdout.on('data', data => {
         console.log(JSON.parse(data.toString()))
@@ -37,11 +37,17 @@ const Run = () => {
             return
         }
         // determine mode:
-        const modeOne = alpha > 0 && Math.abs(alpha) < BALANCE   
+        const modeOne = alpha > 0 && Math.abs(alpha) < BALANCE
+        console.log('Run -> alpha', alpha)
+        console.log('Run -> modeOne', modeOne)
         const motorValue = mapper(alpha, (modeOne ? IN_MIN : IN_MAX) + gyroState.alpha - BALANCE,  (!modeOne ? IN_MIN : IN_MAX) + gyroState.alpha - BALANCE, -255, 255)
+        console.log('Run -> IN_MAX', !modeOne ? IN_MIN : IN_MAX)
+        console.log('Run -> IN_MIN', modeOne ? IN_MIN : IN_MAX)
+
+
         const servoValue = mapper(beta, -3.5, 3.5, -40, 40)
-        controller.act(motorValue > 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
-        controller.act(servoValue ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))
+        // controller.act(motorValue > 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
+        // controller.act(servoValue ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))
     })
 }
 

@@ -1,6 +1,7 @@
 var net = require('net');
 var five = require('johnny-five'); 
 var mock = require('mock-require');
+require('dotenv-extended').load();
 
 mock('@serialport/bindings', '@serialport/binding-mock'); //Elegant way to disable hardware SerialPort that is not available in Termux
 var firmata = require('firmata'); //Firmata implementation for Johnny-Five

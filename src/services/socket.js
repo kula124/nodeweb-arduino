@@ -51,9 +51,9 @@ const Run = () => {
 
 
         const servoValue = mapper(beta, -3.5, 3.5, -40, 40)
-        if (Math.abs(prevValue.alpha - alpha) > MOTOR_DELTA)
+        // if (Math.abs(prevValue.alpha - alpha) > MOTOR_DELTA)
             controller.act(motorValue < 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
-        if (Math.abs(prevValue.beta - beta) > SERVO_DELTA)
+        // if (Math.abs(prevValue.beta - beta) > SERVO_DELTA)
             controller.act(servoValue ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))
         prevValue.alpha = alpha
         prevValue.beta = beta

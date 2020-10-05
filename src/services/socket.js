@@ -4,7 +4,7 @@ const { spawn } = require('child_process')
 const kill  = require('tree-kill');
 
 const messageTypes = require('../constants/message')
-// const controller = require('../controller')
+const controller = require('../controller')
 const MotorActions = require('../constants/motor')
 const ServoActions = require('../constants/servo');
 const { Servo }=require('johnny-five');
@@ -22,7 +22,7 @@ const mapper = (value, inMin, inMax, outMin, outMax) => parseInt(
     (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin);
 
 const Run = () => {
-    runner = spawn('termux-sensor', ['-s', 'K6DS3TR Accelerometer', '-d', 2000])
+    runner = spawn('termux-sensor', ['-s', 'K6DS3TR Accelerometer', '-d', 100])
     let firstRun = true
     let prevValue = {alpha: 0, beta: 0}
     runner.stdout.on('data', data => {
@@ -55,6 +55,8 @@ const Run = () => {
             controller.act(motorValue < 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
         if (Math.abs(prevValue.beta - beta) > SERVO_DELTA)
             controller.act(servoValue ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))
+        prevValue.alpha = alpha
+        prevValue.beta = beta
     })
 }
 

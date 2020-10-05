@@ -27,7 +27,7 @@ const Run = () => {
     }
     runner = spawn('termux-sensor', ['-s', 'K6DS3TR Accelerometer', '-d', 100])
     let prevValue = { motor: 0, servo: 0 }
-    runner.stderr.on('data', error => console.log("Error detected!", error))
+    runner.stderr.on('data', error => console.log("Error detected!", error.toString()))
     runner.on('close', () => console.log('Termux-sensor terminated!'))
     runner.on('error', () => console.log('Main call error'))
     runner.stdout.on('data', data => {

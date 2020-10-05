@@ -37,7 +37,7 @@ const Run = () => {
             return
         }
         // determine mode:
-        const modeOne = alpha > 0 && Math.abs(alpha) < BALANCE
+        const modeOne = alpha > 0
         console.log('Run -> alpha', alpha)
         console.log('Run -> modeOne', modeOne)
         const motorValue = mapper(alpha, (modeOne ? IN_MIN : IN_MAX) - gyroState.alpha + BALANCE,  (!modeOne ? IN_MIN : IN_MAX) - gyroState.alpha + BALANCE, -255, 255)

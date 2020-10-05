@@ -39,7 +39,7 @@ const Run = () => {
         const modeOne = alpha > 0 && Math.abs(alpha) < balance   
         const motorValue = mapper(alpha, (modeOne ? inMin : inMax) + gyroState.alpha - balance,  (!modeOne ? inMin : inMax) + gyroState.alpha - balance, -255, 255)
         const servoValue = mapper(beta, -3.5, 3.5, -40, 40)
-        controller.act(motorValue > 0 MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
+        controller.act(motorValue > 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
         controller.act(servoValue ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))
     })
 }

@@ -13,7 +13,7 @@ let runner = null
 
 let gyroState = {}
 const MOTOR_DELTA = 5
-const SERVO_DELTA = 10
+const SERVO_DELTA = 5
 const IN_MAX = 9.8
 const IN_MIN = 0
 const BALANCE = IN_MAX / 2
@@ -25,6 +25,9 @@ const Run = () => {
     runner = spawn('termux-sensor', ['-s', 'K6DS3TR Accelerometer', '-d', 100])
     let firstRun = true
     let prevValue = {motor: 0, servo: 0}
+    runner.stderr.on('data', error => console.log("Error detected!", error))
+    runner.on('close', console.log('Termux-sensor terminated!'))
+    runner.on('error', () => console.log('Main call error'))
     runner.stdout.on('data', data => {
         let parsedData
         try {
@@ -51,7 +54,7 @@ const Run = () => {
         console.log('Run -> reference', gyroState.alpha)
 
         const motorValue = mapper(alpha, IN_MIN + (- BALANCE + gyroState.alpha), IN_MAX + (-BALANCE + gyroState.alpha), -100, 100)
-        const servoValue = mapper(beta, -3.5, 3.5, -40, 40)
+        const servoValue = mapper(beta, -2, 2, -40, 40)
         console.log('Run -> IN_MIN', IN_MIN - (BALANCE - gyroState.alpha))
         console.log('Run -> IN_MAX',  IN_MAX - (BALANCE - gyroState.alpha))
         console.log('Run -> motorValue', motorValue)

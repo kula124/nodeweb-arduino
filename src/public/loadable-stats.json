@@ -1,0 +1,81 @@
+{
+  "errors": [],
+  "warnings": [
+    "./.cache/static-entry.js\nModule not found: Error: Can't resolve '../src/html' in '/home/kula/Dokumenti/Projects/webpageGenerator/.cache'\n @ ./.cache/static-entry.js",
+    "./node_modules/engine.io-client/node_modules/ws/lib/buffer-util.js\nModule not found: Error: Can't resolve 'bufferutil' in '/home/kula/Dokumenti/Projects/webpageGenerator/node_modules/engine.io-client/node_modules/ws/lib'\n @ ./node_modules/engine.io-client/node_modules/ws/lib/buffer-util.js\n @ ./node_modules/engine.io-client/node_modules/ws/lib/receiver.js\n @ ./node_modules/engine.io-client/node_modules/ws/index.js\n @ ./node_modules/engine.io-client/lib/transports/websocket.js\n @ ./node_modules/engine.io-client/lib/transports/index.js\n @ ./node_modules/engine.io-client/lib/socket.js\n @ ./node_modules/engine.io-client/lib/index.js\n @ ./node_modules/gatsby/node_modules/socket.io-client/lib/manager.js\n @ ./node_modules/gatsby/node_modules/socket.io-client/lib/index.js\n @ ./api.js\n @ ./src/modules/PageContainer.js\n @ ./src/pages/index.js\n @ ./.cache/_this_is_virtual_fs_path_/$virtual/sync-requires.js\n @ ./.cache/static-entry.js",
+    "./node_modules/engine.io-client/node_modules/ws/lib/validation.js\nModule not found: Error: Can't resolve 'utf-8-validate' in '/home/kula/Dokumenti/Projects/webpageGenerator/node_modules/engine.io-client/node_modules/ws/lib'\n @ ./node_modules/engine.io-client/node_modules/ws/lib/validation.js\n @ ./node_modules/engine.io-client/node_modules/ws/lib/receiver.js\n @ ./node_modules/engine.io-client/node_modules/ws/index.js\n @ ./node_modules/engine.io-client/lib/transports/websocket.js\n @ ./node_modules/engine.io-client/lib/transports/index.js\n @ ./node_modules/engine.io-client/lib/socket.js\n @ ./node_modules/engine.io-client/lib/index.js\n @ ./node_modules/gatsby/node_modules/socket.io-client/lib/manager.js\n @ ./node_modules/gatsby/node_modules/socket.io-client/lib/index.js\n @ ./api.js\n @ ./src/modules/PageContainer.js\n @ ./src/pages/index.js\n @ ./.cache/_this_is_virtual_fs_path_/$virtual/sync-requires.js\n @ ./.cache/static-entry.js"
+  ],
+  "version": "4.44.2",
+  "hash": "1dc2af7a797c3b0379fd",
+  "publicPath": "/",
+  "outputPath": "/home/kula/Dokumenti/Projects/webpageGenerator/public",
+  "assetsByChunkName": {
+    "main": [
+      "render-page.js",
+      "render-page.js.map"
+    ]
+  },
+  "assets": [
+    {
+      "name": "render-page.js",
+      "size": 1620737,
+      "chunks": [
+        "main"
+      ],
+      "chunkNames": [
+        "main"
+      ],
+      "info": {},
+      "emitted": false
+    },
+    {
+      "name": "render-page.js.map",
+      "size": 1680236,
+      "chunks": [
+        "main"
+      ],
+      "chunkNames": [
+        "main"
+      ],
+      "info": {
+        "development": true
+      },
+      "emitted": false
+    }
+  ],
+  "filteredAssets": 0,
+  "entrypoints": {
+    "main": {
+      "chunks": [
+        "main"
+      ],
+      "assets": [
+        "render-page.js",
+        "render-page.js.map"
+      ],
+      "children": {},
+      "childAssets": {}
+    }
+  },
+  "namedChunkGroups": {
+    "main": {
+      "chunks": [
+        "main"
+      ],
+      "assets": [
+        "render-page.js",
+        "render-page.js.map"
+      ],
+      "children": {},
+      "childAssets": {}
+    }
+  },
+  "logging": {
+    "webpack.buildChunkGraph.visitModules": {
+      "entries": [],
+      "filteredEntries": 2,
+      "debug": false
+    }
+  },
+  "children": []
+}

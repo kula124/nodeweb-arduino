@@ -119,7 +119,7 @@ const mapJoystickData = (() => {
         console.log(`Running motor ${payload.y > 0 ? 'FORWARD' : 'REVERSE'} by ${motorValue} speed of value ${payload.y}`)
         console.log(`Turning ${payload.x > 0 ? 'LEFT': 'RIGHT'} by angle of ${servoValue} of value ${payload.x}`)
         controller.act(payload.y > 0 ? MotorActions.FORWARD : MotorActions.REVERSE ,motorValue)
-
+        controller.act(payload.x > 0 ? ServoActions.RIGHT, ServoActions.LEFT ,servoValue)
         debounced = true
         setTimeout(() => debounced = false, 150)
     }

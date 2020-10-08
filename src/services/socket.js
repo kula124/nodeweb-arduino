@@ -4,7 +4,7 @@ const { spawn } = require('child_process')
 const kill = require('tree-kill');
 
 const messageTypes = require('../constants/message')
-const controller = require('../controller')
+// const controller = require('../controller')
 const MotorActions = require('../constants/motor')
 const ServoActions = require('../constants/servo');
 
@@ -66,22 +66,75 @@ const Run = () => {
 
 
         if (motorValue > -10 && motorValue < 10)
-            return controller.act(MotorActions.STOP)
+    //        return controller.act(MotorActions.STOP)
         if (Math.abs(prevValue.motor - motorValue) > MOTOR_DELTA) {
-            controller.act(motorValue < 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
+   //         controller.act(motorValue < 0 ? MotorActions.FORWARD : MotorActions.REVERSE, Math.abs(motorValue) > 255 ? 255 : Math.abs(motorValue))
             prevValue.motor = motorValue
         }
         if (Math.abs(prevValue.servo - servoValue) > SERVO_DELTA) {
-            controller.act(servoValue > 0 ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))
+     //       controller.act(servoValue > 0 ? ServoActions.RIGHT : ServoActions.LEFT, Math.abs(servoValue))
             prevValue.servo = servoValue
         }
     })
 }
 
+const isInInterval = (value, start, end) => {
+    return Math.abs(value) > start && Math.abs(value) < end
+}
+
+const mapJoystickData = (() => {
+    let debounced = false
+    let useIntervals = false
+    return payload => {
+        if (debounced)
+            return
+        
+        let motorValue;
+        let servoValue;
+        
+        if (!useIntervals) {
+            motorValue = mapper(payload.y, -50, 50, -255, 255)
+            servoValue = mapper(payload.x, -50, 50, -40, 40)
+        } else {
+            if (isInInterval(payload.y, 10, 25)) {
+                motorValue = mapper(Math.abs(payload.y), 10, 25, 50, 80)
+            }
+            else if (isInInterval(payload.y, 25, 35)) {
+                motorValue = mapper(Math.abs(payload.y), 25, 35, 80, 120)
+            }
+            else if (isInInterval(payload.y, 25, 35)) {
+                motorValue = mapper(Math.abs(payload.y), 25, 35, 80, 120)
+            }
+            else if (isInInterval(payload.y, 35, 50)) {
+                motorValue = mapper(Math.abs(payload.y), 35, 50, 120, 200)
+            }
+            //
+            if (isInInterval(payload.x, 10, 30)) {
+                motorValue = mapper(Math.abs(payload.x), 10, 30, 0, 20)
+            }
+            else if (isInInterval(payload.x, 30, 50)) {
+                motorValue = mapper(Math.abs(payload.x), 30, 50, 20, 40)
+            }
+        }
+        if (isInInterval(payload.x, -10, 10)){
+            servoValue = 0;
+        }
+        if (isInInterval(payload.y, -10, 10)){
+            motorValue = 0;
+        }
+        console.log(`Running motor ${payload.y > 0 ? 'FORWARD' : 'REVERSE'} by ${motorValue} speed of value ${payload.y}`)
+        console.log(`Turning ${payload.x > 0 ? 'LEFT': 'RIGHT'} by angle of ${servoValue} of value ${payload.x}`)
+        
+        debounced = true
+        setTimeout(() => debounced = false, 200)
+    }
+})()
+
 io.on('connect', socket => {
     socket.on('message', data => {
         data = JSON.parse(data)
-        const { type, ...deltas } = data
+        // console.log(data)
+        const { type, payload } = data
         switch (type) {
             case messageTypes.GYRO_START:
                 console.log('START:')
@@ -95,6 +148,9 @@ io.on('connect', socket => {
                 controller.act(MotorActions.STOP)
                 controller.act(ServoActions.STOP)
                 break;
+            case  messageTypes.JOYSTICK:
+                // console.log('JOYSTICK DATA:', payload)
+                mapJoystickData(payload)
         }
     })
 })

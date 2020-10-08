@@ -118,8 +118,13 @@ const mapJoystickData = (() => {
         }
         console.log(`Running motor ${payload.y > 0 ? 'FORWARD' : 'REVERSE'} by ${motorValue} speed of value ${payload.y}`)
         console.log(`Turning ${payload.x > 0 ? 'LEFT': 'RIGHT'} by angle of ${servoValue} of value ${payload.x}`)
-        controller.act(payload.y > 0 ? MotorActions.FORWARD : MotorActions.REVERSE ,motorValue)
-        controller.act(payload.x > 0 ? ServoActions.RIGHT : ServoActions.LEFT , math.abs(servoValue))
+        if (payload.x !== 0){
+            controller.act(payload.x > 0 ? ServoActions.RIGHT : ServoActions.LEFT , Math.abs(servoValue))
+        }
+        
+        if (payload.y !== 0){
+            controller.act(payload.y > 0 ? MotorActions.FORWARD : MotorActions.REVERSE ,motorValue)
+        }
         debounced = true
         setTimeout(() => debounced = false, 150)
     }
@@ -146,11 +151,11 @@ io.on('connect', socket => {
             case  messageTypes.JOYSTICK:
                 // console.log('JOYSTICK DATA:', payload)
                 if (isInInterval(payload.x, -10, 10)){
-                    servoValue = 0;
+                    payload.x = 0;
                     controller.act(ServoActions.STOP)
                 }
                 if (isInInterval(payload.y, -10, 10)){
-                    motorValue = 0;
+                    payload.y = 0;
                     controller.act(MotorActions.STOP)
                 }
                 mapJoystickData(payload)

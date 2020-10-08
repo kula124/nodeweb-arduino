@@ -146,13 +146,13 @@ io.on('connect', socket => {
                 console.log('END:')
                 shouldRun = false;
                 controller.act(MotorActions.STOP)
-                controller.act(ServoActions.STOP)
+                controller.act(ServoActions.RESET)
                 break;
             case  messageTypes.JOYSTICK:
                 // console.log('JOYSTICK DATA:', payload)
                 if (isInInterval(payload.x, -10, 10)){
                     payload.x = 0;
-                    controller.act(ServoActions.STOP)
+                    controller.act(ServoActions.RESET)
                 }
                 if (isInInterval(payload.y, -3, 3)){
                     payload.y = 0;

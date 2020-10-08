@@ -1,5 +1,5 @@
 module.exports = {
   LEFT: 'SERVO.LEFT',
-  STOP: 'SERVO.STOP',
+  RESET: 'SERVO.RESET',
   RIGHT: 'SERVO.RIGHT'
 }

@@ -96,8 +96,8 @@ const mapJoystickData = (() => {
             motorValue = mapper(payload.y, -50, 50, -255, 255)
             servoValue = mapper(payload.x, -50, 50, -40, 40)
         } else {
-            if (isInInterval(payload.y, 10, 25)) {
-                motorValue = mapper(Math.abs(payload.y), 10, 25, 50, 80)
+            if (isInInterval(payload.y, 3, 25)) {
+                motorValue = mapper(Math.abs(payload.y), 3, 25, 50, 80)
             }
             else if (isInInterval(payload.y, 25, 35)) {
                 motorValue = mapper(Math.abs(payload.y), 25, 35, 80, 120)
@@ -121,7 +121,7 @@ const mapJoystickData = (() => {
         if (payload.x !== 0){
             controller.act(payload.x > 0 ? ServoActions.RIGHT : ServoActions.LEFT , Math.abs(servoValue))
         }
-        
+
         if (payload.y !== 0){
             controller.act(payload.y > 0 ? MotorActions.FORWARD : MotorActions.REVERSE ,motorValue)
         }
@@ -154,7 +154,7 @@ io.on('connect', socket => {
                     payload.x = 0;
                     controller.act(ServoActions.STOP)
                 }
-                if (isInInterval(payload.y, -10, 10)){
+                if (isInInterval(payload.y, -3, 3)){
                     payload.y = 0;
                     controller.act(MotorActions.STOP)
                 }

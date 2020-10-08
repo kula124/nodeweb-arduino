@@ -150,11 +150,13 @@ io.on('connect', socket => {
                 break;
             case  messageTypes.JOYSTICK:
                 // console.log('JOYSTICK DATA:', payload)
-                if (isInInterval(payload.x, -10, 10)){
+                if (isInInterval(payload.x, -3, 3)){
+                    console.log(payload.x)
                     payload.x = 0;
                     controller.act(ServoActions.RESET)
                 }
-                if (isInInterval(payload.y, -3, 3)){
+                if (isInInterval(payload.y, -10, 10)){
+                    console.log(payload.y)
                     payload.y = 0;
                     controller.act(MotorActions.STOP)
                 }

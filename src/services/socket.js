@@ -4,7 +4,7 @@ const { spawn } = require('child_process')
 const kill = require('tree-kill');
 
 const messageTypes = require('../constants/message')
-// const controller = require('../controller')
+const controller = require('../controller')
 const MotorActions = require('../constants/motor')
 const ServoActions = require('../constants/servo');
 
@@ -118,15 +118,18 @@ const mapJoystickData = (() => {
         }
         if (isInInterval(payload.x, -10, 10)){
             servoValue = 0;
+            controller.act(ServoActions.STOP)
         }
         if (isInInterval(payload.y, -10, 10)){
             motorValue = 0;
+            controller.act(MotorActions.STOP)
         }
         console.log(`Running motor ${payload.y > 0 ? 'FORWARD' : 'REVERSE'} by ${motorValue} speed of value ${payload.y}`)
         console.log(`Turning ${payload.x > 0 ? 'LEFT': 'RIGHT'} by angle of ${servoValue} of value ${payload.x}`)
-        
+        controller.act(payload.y > 0 ? MotorActions.FORWARD : MotorActions.REVERSE ,motorValue)
+
         debounced = true
-        setTimeout(() => debounced = false, 200)
+        setTimeout(() => debounced = false, 150)
     }
 })()
 

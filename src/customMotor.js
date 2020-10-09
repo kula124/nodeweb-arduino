@@ -15,7 +15,7 @@ class cMotor extends dcMotor {
       }),
       pwm: new five.Pin({
         pin: settings.pins.pwm,
-        type: 'digital',
+        type: 'analog',
         mode: five.Pin.pwm
       })
     }

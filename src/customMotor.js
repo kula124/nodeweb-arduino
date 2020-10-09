@@ -15,7 +15,6 @@ class cMotor extends dcMotor {
       }),
       pwm: new five.Pin({
         pin: settings.pins.pwm,
-        type: 'analog',
         mode: five.Pin.pwm
       })
     }
@@ -24,6 +23,7 @@ class cMotor extends dcMotor {
   forward (value) {
     const { dir, pwm } = this.motorPins
     five.Pin.write(dir, 1)
+    console.log('cMotor -> forward -> value', value)
     five.Pin.write(pwm, value)
   }
 

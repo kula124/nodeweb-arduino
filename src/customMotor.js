@@ -24,7 +24,7 @@ class cMotor extends dcMotor {
     const { dir, pwm } = this.motorPins
     five.Pin.write(dir, 1)
     console.log('cMotor -> forward -> value', value)
-    five.Pin.write(pwm, value)
+    five.Pin.write(pwm, 20)
   }
 
   stop () {

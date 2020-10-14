@@ -1,9 +1,8 @@
 const dcMotor = require('./motor')
 const five = require('johnny-five')
 
-class cMotor extends dcMotor {
+class cMotor {
   constructor (settings) {
-    super(settings)
     this.motorPins = {
       dir: new five.Pin({
         pin: settings.pins.dir,
@@ -13,31 +12,31 @@ class cMotor extends dcMotor {
         pin: settings.pins.cdir,
         type: 'digital'
       }),
-      pwm: new five.Pin({
+      pwm: new five.Led({
         pin: settings.pins.pwm,
-        mode: five.Pin.pwm
       })
     }
   }
 
   forward (value) {
-    const { dir, pwm } = this.motorPins
-    five.Pin.write(dir, 1)
-    console.log('cMotor -> forward -> value', value)
-    five.Pin.write(pwm, 20)
+    const { dir, pwm, cdir } = this.motorPins
+    dir.high()
+    cdir.low()
+    pwm.brightness(value)
   }
 
   stop () {
     const { dir, pwm, cdir } = this.motorPins
-    five.Pin.write(dir, 0)
-    five.Pin.write(cdir, 0)
-    five.Pin.write(pwm, 0)
+    dir.low()
+    cdir.low()
+    pwm.brightness(0)
   }
 
   reverse (value) {
-    const { cdir, pwm } = this.motorPins
-    five.Pin.write(cdir, 1)
-    five.Pin.write(pwm, value)
+    const { dir, pwm, cdir } = this.motorPins
+    cdir.high()
+    dir.low()
+    pwm.brightness(value)
   }
 }
 

@@ -1,16 +1,16 @@
 const five = require('johnny-five')
 const motorAction = require('./constants/motor')
 const servoAction = require('./constants/servo')
-const DcMotor = require('./customMotor')
+const motor = require('./motor')([process.env.DCMOTOR_PIN_PWM, process.env.DCMOTOR_PIN_D1, process.env.DCMOTOR_PIN_D2])
 
-const motor = new DcMotor({
+/*const motor = new DcMotor({
   // config: five.Motor.SHIELD_CONFIGS.POLOLU_DRV8835_SHIELD,
   pins: {
     pwm: process.env.DCMOTOR_PIN_PWM,
     dir: process.env.DCMOTOR_PIN_D2,
     cdir: process.env.DCMOTOR_PIN_D1
   }
-})
+})*/
 
 const servo = new five.Servo({
   pin: process.env.SERVO_PIN,

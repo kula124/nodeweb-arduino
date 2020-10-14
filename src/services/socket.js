@@ -93,11 +93,11 @@ const mapJoystickData = (() => {
         let servoValue;
         
         if (!useIntervals) {
-            motorValue = mapper(payload.y, -50, 50, -255, 255)
-            servoValue = mapper(payload.x, -50, 50, -40, 40)
+            motorValue = mapper(payload.y, -49, 49, -255, 255)
+            servoValue = mapper(payload.x, -49, 49, -40, 40)
         } else {
             if (isInInterval(payload.y, 3, 25)) {
-                motorValue = mapper(Math.abs(payload.y), 3, 25, 50, 80)
+                motorValue = mapper(Math.abs(payload.y), 3, 25, 49, 80)
             }
             else if (isInInterval(payload.y, 25, 35)) {
                 motorValue = mapper(Math.abs(payload.y), 25, 35, 80, 120)
@@ -105,15 +105,15 @@ const mapJoystickData = (() => {
             else if (isInInterval(payload.y, 25, 35)) {
                 motorValue = mapper(Math.abs(payload.y), 25, 35, 80, 120)
             }
-            else if (isInInterval(payload.y, 35, 50)) {
-                motorValue = mapper(Math.abs(payload.y), 35, 50, 120, 200)
+            else if (isInInterval(payload.y, 35, 49)) {
+                motorValue = mapper(Math.abs(payload.y), 35, 49, 120, 200)
             }
             //
             if (isInInterval(payload.x, 10, 30)) {
                 motorValue = mapper(Math.abs(payload.x), 10, 30, 0, 20)
             }
-            else if (isInInterval(payload.x, 30, 50)) {
-                motorValue = mapper(Math.abs(payload.x), 30, 50, 20, 40)
+            else if (isInInterval(payload.x, 30, 49)) {
+                motorValue = mapper(Math.abs(payload.x), 30, 49, 20, 40)
             }
         }
         console.log(`Running motor ${payload.y > 0 ? 'FORWARD' : 'REVERSE'} by ${motorValue} speed of value ${payload.y}`)
@@ -126,7 +126,7 @@ const mapJoystickData = (() => {
             controller.act(payload.y > 0 ? MotorActions.FORWARD : MotorActions.REVERSE ,motorValue)
         }
         debounced = true
-        setTimeout(() => debounced = false, 150)
+        setTimeout(() => debounced = false, 149)
     }
 })()
 

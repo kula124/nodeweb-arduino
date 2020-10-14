@@ -20,25 +20,21 @@ class cMotor {
   }
 
   forward (value) {
-    const { dir, pwm, cdir } = this.motorPins
-    console.log('cMotor -> forward -> this.motorPins', this.motorPins)
-    dir.high()
-    cdir.low()
-    pwm.brightness(value)
+    this.motorPins.dir.high()
+    this.motorPins.cdir.low()
+    this.motorPins.pwm.brightness(value)
   }
 
   stop () {
-    const { dir, pwm, cdir } = this.motorPins
-    dir.low()
-    cdir.low()
-    pwm.brightness(0)
+    this.motorPins.dir.low()
+    this.motorPins.cdir.low()
+    this.motorPins.pwm.brightness(0)
   }
 
   reverse (value) {
-    const { dir, pwm, cdir } = this.motorPins
-    cdir.high()
-    dir.low()
-    pwm.brightness(value)
+    this.motorPins.cdir.high()
+    this.motorPins.dir.low()
+    this.motorPins.pwm.brightness(value)
   }
 }
 

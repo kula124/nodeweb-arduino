@@ -3,6 +3,7 @@ const five = require('johnny-five')
 
 class cMotor {
   constructor (settings) {
+    console.log('cMotor -> constructor -> settings', settings)
     this.motorPins = {
       dir: new five.Pin({
         pin: settings.pins.dir,
@@ -20,6 +21,7 @@ class cMotor {
 
   forward (value) {
     const { dir, pwm, cdir } = this.motorPins
+    console.log('cMotor -> forward -> this.motorPins', this.motorPins)
     dir.high()
     cdir.low()
     pwm.brightness(value)

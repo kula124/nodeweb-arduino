@@ -27,9 +27,9 @@ class cMotor {
 
   stop () {
     const { dir, cdir, pwm } = this.motorPins
-    five.Pin.write(dir, 0)
-    five.Pin.write(cdir, 0)
-    five.Pin.write(pwm, 0)
+    dir.low()
+    cdir.low()
+    pwm.brightness(0)
   }
 
   reverse (value) {

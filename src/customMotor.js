@@ -3,7 +3,6 @@ const five = require('johnny-five')
 
 class cMotor {
   constructor (settings) {
-    super(settings)
     this.motorPins = {
       dir: new five.Pin({
         pin: settings.pins.dir,
